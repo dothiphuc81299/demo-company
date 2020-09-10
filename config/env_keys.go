@@ -7,23 +7,23 @@ type  ENV struct {
 	ZookeeperTestURI string
 
 	//Add port 
-	CompanyPort string 
+	AppPort string 
 
 	Database struct {
 		URI string 
-		CompanyName string
+		Name string
 		TestName string
 	}
 
 	GRPC struct {
-		GRPCURI string
+		URI string
 	}
 }
 
 var env ENV
 
-// initENV ..
-func initENV(){
+// InitENV ..
+func InitENV(){
 	env =ENV{
 		IsDev :true,
 	}

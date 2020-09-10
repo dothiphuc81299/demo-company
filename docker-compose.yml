@@ -1,0 +1,25 @@
+version: '3'
+services:
+    web:
+        depends_on: 
+            - zookeeper
+        environment: 
+            - ZOOKEEPER_URI=zookeeper:2181
+        build: .
+        ports:
+            - "8081:8081"
+        networks: 
+            - web-go
+    zookeeper:
+        image: zookeeper
+        container_name: zookCompany
+        restart: always
+        hostname: zoo1
+        volumes:
+            - /home/phuc/zookeeper:/data
+        ports:
+            - 2181-2181
+        networks: 
+            - web-go   
+networks: 
+    web-go:

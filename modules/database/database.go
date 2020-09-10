@@ -26,7 +26,7 @@ func Connect() {
 	
 	// err 
 	if err != nil {
-		log.Fatal("Cannot connect to database:", envVars.Database.URI)
+		log.Fatal("Cannot connect to database:",err)
 	}
 
 	ctx,cancel:=context.WithTimeout(context.Background(),10*time.Second)
@@ -37,7 +37,7 @@ func Connect() {
 		log.Fatal("Cannot connect ",err)	
 	}
 	
-	db =client.Database(envVars.Database.CompayName)
-	fmt.Println("Database connected to",envVars.Database.CompayName)
+	db =client.Database(envVars.Database.Name)
+	fmt.Println("Database connected to",envVars.Database.Name)
 }
 
