@@ -12,9 +12,8 @@ type (
 		ID               primitive.ObjectID `bson:"_id"`
 		CompanyID        primitive.ObjectID `bson:"companyID"`
 		Name             string             `bson:"name"`
-		TotalTransaction float64            `bson:"totalTransaction"`
+		TotalTransaction int64              `bson:"totalTransaction"`
 		TotalRevenue     float64            `bson:"totalRevenue"`
 		CreatedAt        time.Time          `bson:"createdAt"`
 	}
-
 )

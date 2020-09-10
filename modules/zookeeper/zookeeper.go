@@ -19,26 +19,34 @@ func Connect() {
 		envVars = config.GetEnv()
 	)
 	conn, _, err := zk.Connect([]string{uri}, time.Second*30)
-	
+
 	if err != nil {
 		fmt.Println("Can't connect to zookeeper", uri)
 		panic(err)
 	}
 	fmt.Println("Connected to zookeeper", uri)
 
-	// App Port
-	appPort, _, _ := conn.Get("/app/port")
-	envVars.AppPort = string(appPort)
+	// App port
+	appCompanyPort, _, _ := conn.Get("/app/port/company")
+	envVars.AppPort = string(appCompanyPort)
 
 	// Database
 	databaseURI, _, _ := conn.Get("/database/uri")
 	envVars.Database.URI = string(databaseURI)
-	databaseName, _, _ := conn.Get("/database/name")
-	envVars.Database.Name = string(databaseName)
+	databaseCompanyName, _, _ := conn.Get("/database/name/company")
+	envVars.Database.Name = string(databaseCompanyName)
 	databaseTestName, _, _ := conn.Get("/database/test/name")
 	envVars.Database.TestName = string(databaseTestName)
 
-	// grpc Server
-	grpcURI, _, _ := conn.Get("/grpc/uri")
-	envVars.GRPC.URI = string(grpcURI)
+	// GRPCAddresses
+	grpcAddressCompany, _, _ := conn.Get("/grpc/uri/company")
+	envVars.GRPCAddresses.Company = string(grpcAddressCompany)
+	grpcAddressTransaction, _, _ := conn.Get("/grpc/uri/transaction")
+	envVars.GRPCAddresses.Transaction = string(grpcAddressTransaction)
+
+	// GRPCPorts
+	grpcPortCompany, _, _ := conn.Get("/grpc/port/company")
+	envVars.GRPCPorts.Company = string(grpcPortCompany)
+	grpcPortTransaction, _, _ := conn.Get("/grpc/port/transaction")
+	envVars.GRPCPorts.Transaction = string(grpcPortTransaction)
 }

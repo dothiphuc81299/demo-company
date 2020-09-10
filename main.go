@@ -10,6 +10,7 @@ import (
 	"demo-company/modules/database"
 	"demo-company/modules/zookeeper"
 	"demo-company/routes"
+	grpcnode "demo-company/grpc/node"
 )
 
 func init() {
@@ -38,6 +39,11 @@ func main() {
 	server.Use(middleware.Recover())
 
 	routes.Boostrap(server)
+
+	// Start gRPC server
+	go func() {
+		grpcnode.Start()
+	}()
 
 	server.Logger.Fatal(server.Start(envVars.AppPort))
 }
