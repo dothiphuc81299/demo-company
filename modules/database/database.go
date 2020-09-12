@@ -13,12 +13,12 @@ import (
 )
 
 var (
-	db *mongo.Database
+	DB *mongo.Database
 	client *mongo.Client
 )
 
 // Connect ...
-func Connect() {
+func Connect(database string) *mongo.Database{
 	envVars :=config.GetEnv()
 
 	// connect to database
@@ -37,7 +37,8 @@ func Connect() {
 		log.Fatal("Cannot connect ",err)	
 	}
 	
-	db =client.Database(envVars.Database.Name)
-	fmt.Println("Database connected to",envVars.Database.Name)
+	DB = client.Database(database)
+	fmt.Println("Database connected",database)
+	return DB
 }
 

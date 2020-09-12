@@ -8,7 +8,7 @@ type (
 	// CompanyCreatePayload ...
 	CompanyCreatePayload struct {
 		Name           string  `json:"name"`
-		CashbagPercent float64 `json:"cashbagPercent"`
+		CashbackPercent float64 `json:"cashbackPercent"`
 	}
 )
 
@@ -16,7 +16,7 @@ type (
 func (payload CompanyCreatePayload) Validate() error {
 	err := validation.Errors{
 		"name":           validation.Validate(payload.Name, validation.Required, validation.Length(3, 20)),
-		"cashbagPercent": validation.Validate(payload.CashbagPercent, validation.Required),
+		"cashbackPercent": validation.Validate(payload.CashbackPercent, validation.Required),
 	}.Filter()
 	return err
 }

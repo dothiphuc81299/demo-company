@@ -17,37 +17,39 @@ import (
 	"demo-company/modules/database"
 )
 
-
-type CompanySuite struct {
+type BranchSuite struct {
 	suite.Suite
 	e *echo.Echo
 }
 
-func (suite CompanySuite) SetupSuite() {
-	suite.e= InitEcho()
+func (suite BranchSuite) SetupSuite() {
+	suite.e =InitEcho()
+	util.HelperCompanyCreateFake()
 	RemoveOldDataCompany()
+	removeOldDataBranch()
 }
 
-func (suite CompanySuite) TearDownSuite() {
+func (suite BranchSuite) TearDownSuite() {
 	RemoveOldDataCompany()
+	removeOldDataBranch()
 }
 
-func RemoveOldDataCompany() {
-	database.CompanyCol().DeleteMany(context.Background(), bson.M{})
+func removeOldDataBranch() {
+	database.BranchCol().DeleteMany(context.Background(),bson.M{})
 }
 
-func (suite *CompanySuite) TestSuccess() {
+func (suite *BranchSuite) TestSuccess(){
 	var (
-			response util.Response
-		payload = models.CompanyCreatePayload{
-			Name:           "PhucMars",
-			CashbackPercent: 19.2,
+		payload =  models.BranchCreatePayload {
+			CompanyID : util.CompanyStringSuccess,
+			Name: "89Nguyen chanh",
 		}
+		response util.Response
 	)
 	suite.e = InitEcho()
 
 	//set up request
-	req, _ := http.NewRequest(http.MethodPost, "/companies", util.HelperToIOReader(payload))
+	req, _ := http.NewRequest(http.MethodPost, "/branches", util.HelperToIOReader(payload))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	res := httptest.NewRecorder()
 	
@@ -62,58 +64,59 @@ func (suite *CompanySuite) TestSuccess() {
 	assert.Equal(suite.T(), "thanh cong!", response["message"])
 }
 
-func (suite *CompanySuite) TestNameFail() {
-		var (
-			response util.Response
-		payload = models.CompanyCreatePayload{
-			Name:           "",
-			CashbackPercent: 19.2,
+func (suite *BranchSuite) TestInvalidCompanyIDFail(){
+	var (
+		payload =  models.BranchCreatePayload {
+			CompanyID : util.CompanyStringInvalid,
+			Name: "89Nguyen chanh",
 		}
+		response util.Response
 	)
 	suite.e = InitEcho()
 
 	//set up request
-	req, _ := http.NewRequest(http.MethodPost, "/companies", util.HelperToIOReader(payload))
+	req, _ := http.NewRequest(http.MethodPost, "/branches", util.HelperToIOReader(payload))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	res := httptest.NewRecorder()
-
+	
 	suite.e.ServeHTTP(res, req)
 
 	//parse .. 
 	json.Unmarshal([]byte(res.Body.String()), &response)	
-
+	
 	//Test
 	assert.Equal(suite.T(), http.StatusBadRequest, res.Code)
 	assert.Equal(suite.T(), nil, response["data"])
 	assert.NotEqual(suite.T(), "thanh cong!", response["message"])
 }
 
-
-func (suite *CompanySuite) TestCashbackFail() {
-		var (
-			response util.Response
-		payload = models.CompanyCreatePayload{
-			Name:           "PhucMassr",
-			CashbackPercent: 0,
+func (suite *BranchSuite) TestInvalidNameFail(){
+	var (
+		payload =  models.BranchCreatePayload {
+			CompanyID : util.CompanyStringSuccess,
+			Name: "89",
 		}
+		response util.Response
 	)
 	suite.e = InitEcho()
 
 	//set up request
-	req, _ := http.NewRequest(http.MethodPost, "/companies", util.HelperToIOReader(payload))
+	req, _ := http.NewRequest(http.MethodPost, "/branches", util.HelperToIOReader(payload))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	res := httptest.NewRecorder()
-
+	
 	suite.e.ServeHTTP(res, req)
 
 	//parse .. 
 	json.Unmarshal([]byte(res.Body.String()), &response)	
-
+	
 	//Test
 	assert.Equal(suite.T(), http.StatusBadRequest, res.Code)
 	assert.Equal(suite.T(), nil, response["data"])
 	assert.NotEqual(suite.T(), "thanh cong!", response["message"])
 }
-func TestCompanySuite(t *testing.T) {
-	suite.Run(t, new(CompanySuite))
+
+func TestBranchSuite(t *testing.T) {
+	suite.Run(t, new(BranchSuite))
 }
+

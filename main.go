@@ -14,8 +14,9 @@ import (
 
 func init() {
 	config.InitENV()
+	envVars := config.GetEnv()
 	zookeeper.Connect()
-	database.Connect()
+	database.Connect(envVars.Database.Name)
 }
 
 func main() {

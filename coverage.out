@@ -1,0 +1,11 @@
+mode: set
+demo-company/controllers/init.go:13.59,14.36 1 0
+demo-company/controllers/init.go:14.36,17.3 2 0
+demo-company/controllers/init.go:21.28,30.2 8 1
+demo-company/controllers/init.go:33.29,36.2 2 0
+demo-company/controllers/branch.go:13.41,22.16 3 0
+demo-company/controllers/branch.go:27.2,30.8 1 0
+demo-company/controllers/branch.go:22.16,24.3 1 0
+demo-company/controllers/company.go:13.42,22.16 3 0
+demo-company/controllers/company.go:27.2,30.8 1 0
+demo-company/controllers/company.go:22.16,24.3 1 0

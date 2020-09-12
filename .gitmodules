@@ -1,0 +1,3 @@
+[submodule "proto/cashbag-proto"]
+	path = proto/cashbag-proto
+	url = https://github.com/lqhoang99/cashbag-proto

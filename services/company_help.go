@@ -13,7 +13,7 @@ func companyCreatePayloadToBSON(payload models.CompanyCreatePayload) models.Comp
 	result := models.CompanyBSON{
 		ID:             primitive.NewObjectID(),
 		Name:           payload.Name,
-		CashbagPercent: payload.CashbagPercent,
+		CashbackPercent: payload.CashbackPercent,
 		CreatedAt:      time.Now(),
 	}
 	return result
