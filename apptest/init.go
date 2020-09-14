@@ -1,6 +1,7 @@
-package main
+package apptest
 
 import (
+	"demo-company/util"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -10,20 +11,20 @@ import (
 	"demo-company/modules/database"
 	"demo-company/modules/zookeeper"
 	"demo-company/routes"
+
 )
 
-func init() {
+func InitServer() *echo.Echo {
 	config.InitENV()
 	zookeeper.Connect()
 	database.Connect()
-}
-
-func main() {
-	envVars := config.GetEnv()
-	server := echo.New()
+	util.HelperConnect()
+	
+	// New echo
+	e := echo.New()
 
 	//CORS
-	server.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins:     []string{"*"},
 		AllowHeaders:     []string{echo.HeaderOrigin, echo.HeaderContentLength, echo.HeaderContentType, echo.HeaderAuthorization},
 		AllowMethods:     []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodPatch, http.MethodDelete, http.MethodOptions},
@@ -32,12 +33,13 @@ func main() {
 	}))
 
 	// Middleware
-	server.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "${time_rfc3339} | ${remote_ip} | ${method} ${uri} - ${status} - ${latency_human}\n",
 	}))
-	server.Use(middleware.Recover())
+	e.Use(middleware.Recover())
 
-	routes.Boostrap(server)
+	// Route
+	routes.Boostrap(e)
 
-	server.Logger.Fatal(server.Start(envVars.AppPort))
+	return e
 }

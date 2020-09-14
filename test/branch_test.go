@@ -1,4 +1,4 @@
-package controllers
+package test
 
 import (
 	"context"
@@ -15,42 +15,52 @@ import (
 	"demo-company/util"
 	"demo-company/models"
 	"demo-company/modules/database"
+	"demo-company/apptest"
 )
 
-
-type CompanySuite struct {
+type BranchSuite struct {
 	suite.Suite
 	e *echo.Echo
+	data models.BranchCreatePayload 
 }
 
-func (suite CompanySuite) SetupSuite() {
-	suite.e= InitEcho()
+func (suite *BranchSuite) SetupSuite() {
+	// init server ... 
+	suite.e =apptest.InitServer()
+
+	// clear data 
 	RemoveOldDataCompany()
+	removeOldDataBranch()
+	
+	// set up payload data 
+	companyIDString := util.HelperCompanyCreateFake()
+	suite.data = models.BranchCreatePayload{
+			CompanyID: companyIDString,
+			Name: "89Nguyen chanh",
+	}
 }
 
-func (suite CompanySuite) TearDownSuite() {
+func (suite *BranchSuite) TearDownSuite() {
 	RemoveOldDataCompany()
+	removeOldDataBranch()
 }
 
-func RemoveOldDataCompany() {
-	database.CompanyCol().DeleteMany(context.Background(), bson.M{})
+func removeOldDataBranch() {
+	database.BranchCol().DeleteMany(context.Background(),bson.M{})
 }
 
-func (suite *CompanySuite) TestSuccess() {
+func (suite *BranchSuite) TestBranchCreateSuccess(){
 	var (
-			response util.Response
-		payload = models.CompanyCreatePayload{
-			Name:           "PhucMars",
-			CashbackPercent: 19.2,
-		}
+		payload = suite.data
+		response util.Response
 	)
-	suite.e = InitEcho()
-
+	
 	//set up request
-	req, _ := http.NewRequest(http.MethodPost, "/companies", util.HelperToIOReader(payload))
+	req, _ := http.NewRequest(http.MethodPost, "/branches", util.HelperToIOReader(payload))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	res := httptest.NewRecorder()
 	
+	// Run HTTP server
 	suite.e.ServeHTTP(res, req)
 
 	//parse .. 
@@ -62,58 +72,60 @@ func (suite *CompanySuite) TestSuccess() {
 	assert.Equal(suite.T(), "thanh cong!", response["message"])
 }
 
-func (suite *CompanySuite) TestNameFail() {
-		var (
-			response util.Response
-		payload = models.CompanyCreatePayload{
-			Name:           "",
-			CashbackPercent: 19.2,
+func (suite *BranchSuite) TestBranchCreateFailureWithInvalidCompanyID(){
+	var (
+		payload =  models.BranchCreatePayload {
+			CompanyID : "08282882",
+			Name: "89Nguyen chanh",
 		}
+		response util.Response
 	)
-	suite.e = InitEcho()
-
+	
 	//set up request
-	req, _ := http.NewRequest(http.MethodPost, "/companies", util.HelperToIOReader(payload))
+	req, _ := http.NewRequest(http.MethodPost, "/branches", util.HelperToIOReader(payload))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	res := httptest.NewRecorder()
-
+	
+	// Run HTTP server
 	suite.e.ServeHTTP(res, req)
 
 	//parse .. 
 	json.Unmarshal([]byte(res.Body.String()), &response)	
-
+	
 	//Test
 	assert.Equal(suite.T(), http.StatusBadRequest, res.Code)
 	assert.Equal(suite.T(), nil, response["data"])
 	assert.NotEqual(suite.T(), "thanh cong!", response["message"])
 }
 
-
-func (suite *CompanySuite) TestCashbackFail() {
-		var (
-			response util.Response
-		payload = models.CompanyCreatePayload{
-			Name:           "PhucMassr",
-			CashbackPercent: 0,
+func (suite *BranchSuite) TestBranchCreateWithFailureInvalidName(){
+	var (
+		data = suite.data 
+		payload =  models.BranchCreatePayload {
+			CompanyID : data.CompanyID, 
+			Name: "89",
 		}
+		response util.Response
 	)
-	suite.e = InitEcho()
-
+	
 	//set up request
-	req, _ := http.NewRequest(http.MethodPost, "/companies", util.HelperToIOReader(payload))
+	req, _ := http.NewRequest(http.MethodPost, "/branches", util.HelperToIOReader(payload))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	res := httptest.NewRecorder()
-
+	
+	// Run HTTP server 
 	suite.e.ServeHTTP(res, req)
 
 	//parse .. 
 	json.Unmarshal([]byte(res.Body.String()), &response)	
-
+	
 	//Test
 	assert.Equal(suite.T(), http.StatusBadRequest, res.Code)
 	assert.Equal(suite.T(), nil, response["data"])
 	assert.NotEqual(suite.T(), "thanh cong!", response["message"])
 }
-func TestCompanySuite(t *testing.T) {
-	suite.Run(t, new(CompanySuite))
+
+func TestBranchSuite(t *testing.T) {
+	suite.Run(t, new(BranchSuite))
 }
+

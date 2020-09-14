@@ -11,10 +11,10 @@ const (
 
 // CompanyCol ...
 func CompanyCol() *mongo.Collection {
-	return DB.Collection(companies)
+	return db.Collection(companies)
 }
 
 // BranchCol ...
 func BranchCol() *mongo.Collection {
-	return DB.Collection(branches)
+	return db.Collection(branches)
 }

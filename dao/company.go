@@ -22,7 +22,6 @@ func CompanyCreate(doc models.CompanyBSON) (models.CompanyBSON, error) {
 	return doc, err
 }
 
-
 // CompanyFindByID ...
 func CompanyFindByID(id primitive.ObjectID) (models.CompanyBSON, error) {
 	var (
