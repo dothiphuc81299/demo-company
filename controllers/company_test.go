@@ -7,4 +7,3 @@ import (
 type CompanySuite struct {
 	suite.Suite
 }
-

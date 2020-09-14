@@ -1,35 +1,44 @@
 package config
-// ENV  ...
-type  ENV struct {
-	IsDev bool 
 
-	ZookeeperURI string 
+// ENV  ...
+type ENV struct {
+	IsDev bool
+
+	ZookeeperURI     string
 	ZookeeperTestURI string
 
-	//Add port 
-	AppPort string 
+	//Add port
+	AppPort string
 
 	Database struct {
-		URI string 
-		Name string
+		URI      string
+		Name     string
 		TestName string
 	}
 
-	GRPC struct {
-		URI string
+	// gRPC addresses
+	GRPCAddresses struct {
+		Company     string
+		Transaction string
+	}
+
+	// gRPC ports
+	GRPCPorts struct {
+		Company     string
+		Transaction string
 	}
 }
 
 var env ENV
 
 // InitENV ..
-func InitENV(){
-	env =ENV{
-		IsDev :true,
+func InitENV() {
+	env = ENV{
+		IsDev: true,
 	}
 }
 
-// GetEnv ... 
+// GetEnv ...
 func GetEnv() *ENV {
-	return &env 
+	return &env
 }

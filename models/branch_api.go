@@ -7,7 +7,7 @@ import (
 
 // BranchCreatePayload ...
 type BranchCreatePayload struct {
-	CompanyID string `json:"companyID`
+	CompanyID string `json:"companyID"`
 	Name      string `json:"name"`
 }
 

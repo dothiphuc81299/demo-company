@@ -29,3 +29,21 @@ func CompanyCreate(c echo.Context) error {
 		"createdAt": rawData.CreatedAt,
 	}, "")
 }
+
+// TransactionFindByCompanyID ...
+func TransactionFindByCompanyID(c echo.Context) error {
+	var (
+		companyID = c.Param("id")
+	)
+
+	// process data
+	rawData, err := services.TransactionFindByCompanyID(companyID)
+
+	// if err
+	if err != nil {
+		return util.Response400(c, nil, err.Error())
+	}
+
+	// Success
+	return util.Response200(c, rawData, "")
+}
