@@ -6,8 +6,10 @@ import (
 	"net/http/httptest"
 	"testing"
 	"encoding/json"
+	"fmt"
 
 	"github.com/labstack/echo/v4"
+	"github.com/xeipuuv/gojsonschema"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 	"go.mongodb.org/mongo-driver/bson"
@@ -51,6 +53,7 @@ func (suite *CompanyCreateSuite) TestCompanyCreateSuccess() {
 	var (
 			response util.Response
 			payload = suite.data	
+			schemaLoader = gojsonschema.NewReferenceLoader("file:///home/phuc/go/src/demo-company/schema/company_create.json")
 	)
 	
 	//set up request
@@ -63,6 +66,21 @@ func (suite *CompanyCreateSuite) TestCompanyCreateSuccess() {
 
 	//parse .. 
 	json.Unmarshal([]byte(res.Body.String()), &response)	
+	documentLoader := gojsonschema.NewGoLoader(response)
+
+	result, err := gojsonschema.Validate(schemaLoader, documentLoader)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	if result.Valid() {
+		fmt.Printf("The document is valid\n")
+	} else {
+		fmt.Printf("The document is not valid. see errors :\n")
+		for _, desc := range result.Errors() {
+			fmt.Printf("- %s\n", desc)
+		}
+	}
 	
 	//Test
 	assert.Equal(suite.T(), http.StatusOK, res.Code)
