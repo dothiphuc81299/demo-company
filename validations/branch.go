@@ -5,7 +5,7 @@ import(
 
 	"demo-company/models"	
 	"demo-company/util"
-	"demo-company/services"
+
 
 )
 
@@ -26,7 +26,7 @@ func BranchCreate(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		// Validate object id
-		companyID, err := services.StringToObjectID(doc.CompanyID)
+		companyID, err := util.ValidationObjectID(doc.CompanyID)
 		
 		if err != nil {
 			return util.Response400(c, nil, err.Error())

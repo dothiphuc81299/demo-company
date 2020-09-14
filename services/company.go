@@ -22,7 +22,6 @@ func CompanyCreate(payload models.CompanyCreatePayload) (models.CompanyBSON, err
 		err = errors.New("Khong the tao company")
 		return doc, err
 	}
-
 	return doc, err
 }
 

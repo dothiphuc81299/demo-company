@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -13,31 +12,35 @@ import (
 )
 
 var (
-	db *mongo.Database
+	db     *mongo.Database
 	client *mongo.Client
 )
 
 // Connect ...
 func Connect() {
-	envVars :=config.GetEnv()
+	envVars := config.GetEnv()
 
-	// connect to database
-	client,err :=mongo.NewClient(options.Client().ApplyURI(envVars.Database.URI))
-	
-	// err 
+	// Set Client
+	cl, err := mongo.Connect(context.Background(), options.Client().ApplyURI(envVars.Database.URI))
 	if err != nil {
-		log.Fatal("Cannot connect to database:",err)
+		log.Println("err", err)
+		log.Fatal("Cannot connect to database ", envVars.Database.URI)
 	}
 
-	ctx,cancel:=context.WithTimeout(context.Background(),10*time.Second)
-	defer cancel()
-	err = client.Connect(ctx)
+	// Set client
+	client = cl
 
-	if err !=nil {
-		log.Fatal("Cannot connect ",err)	
-	}
-	
-	db =client.Database(envVars.Database.Name)
-	fmt.Println("Database connected to",envVars.Database.Name)
+	// Set database
+	db = client.Database(envVars.Database.Name)
+	fmt.Println("Database Connected to", envVars.Database.Name)
 }
 
+// GetClient ...
+func GetClient() *mongo.Client {
+	return client
+}
+
+// SetDB ....
+func SetDB(dbValue *mongo.Database) {
+	db = dbValue
+}

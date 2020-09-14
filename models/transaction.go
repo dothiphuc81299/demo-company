@@ -7,7 +7,6 @@ import (
 )
 
 type (
-
 	// TransactionDetail ...
 	TransactionDetail struct {
 		ID                     primitive.ObjectID `json:"_id"`

@@ -22,5 +22,4 @@ func BranchCreate(payload models.BranchCreatePayload) (models.BranchBSON, error)
 	}
 
 	return doc, err
-
 }
