@@ -1,6 +1,11 @@
 create /app
+create /app/port
+create /app/port/user ":8082"
+create /app/port/company ":8081"
+create /app/port/transaction ":8080"
 create /database
 create /database/uri "mongodb+srv://CashbagMe:Cashbag@cluster0.epe8y.gcp.mongodb.net/Cluster0?retryWrites=true&w=majority"
+create /database/name
 create /database/name/user "CashBagUser"
 create /database/name/transaction "CashBagTransaction"
 create /database/name/company "CashBagCompany"
@@ -11,9 +16,6 @@ create /database/test/company "CashBagCompanyTest"
 create /redis
 create /redis/uri "redis:6379"
 create /redis/pass ""
-create /app/port/user ":8082"
-create /app/port/company ":8081"
-create /app/port/transaction ":8080"
 create /grpc
 create /grpc/address
 create /grpc/address/user "localhost"
