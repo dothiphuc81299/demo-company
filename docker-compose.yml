@@ -9,10 +9,10 @@ services:
         ports:
             - "8081:8081"
         networks: 
-            - web-go
+            - web-company
     zookeeper:
         image: zookeeper
-        container_name: zookCompany
+        container_name: zookeeper
         restart: always
         hostname: zoo1
         volumes:
@@ -20,6 +20,6 @@ services:
         ports:
             - 2181-2181
         networks: 
-            - web-go   
+            - web-company 
 networks: 
-    web-go:
+    web-company:
