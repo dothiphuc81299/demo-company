@@ -23,7 +23,7 @@ func GetTransactionDetailByCompanyID(companyID string) (transactions []models.Tr
 		log.Printf("Call grpc get transaction by companyID error %v\n", err)
 		return 
 	}
-
+	
 	// Convert to Company brief
 	transactions = convertToTransactionDetailList(result.TransactionDetail)
 	return

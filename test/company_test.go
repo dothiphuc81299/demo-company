@@ -86,7 +86,6 @@ func (suite *CompanyCreateSuite) TestCompanyCreateSuccess() {
 	assert.Equal(suite.T(), http.StatusOK, res.Code)
 	assert.NotEqual(suite.T(), nil, response["data"])
 	assert.Equal(suite.T(), "thanh cong!", response["message"])
-
 }
 
 func (suite *CompanyCreateSuite) TestCompanyCreateFailureWithInvalidName() {

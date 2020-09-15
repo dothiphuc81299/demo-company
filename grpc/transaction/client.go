@@ -22,5 +22,5 @@ func CreateClient() (*grpc.ClientConn, transactionpb.TransactionServiceClient) {
 
 	client := transactionpb.NewTransactionServiceClient(clientConn)
 
-	return clientConn, client
+	return clientConn, client	
 }
