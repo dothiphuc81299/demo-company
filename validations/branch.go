@@ -23,6 +23,8 @@ func BranchCreate(next echo.HandlerFunc) echo.HandlerFunc {
 			return util.Response400(c, nil, err.Error())
 		}
 
+		companyID := util.HelperParseStringToObjectID(doc.CompanyID)
+		c.Set("companyID", companyID)
 		c.Set("branchPayload", doc)
 		return next(c)
 	}
