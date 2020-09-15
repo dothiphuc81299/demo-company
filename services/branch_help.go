@@ -9,10 +9,9 @@ import (
 	"demo-company/util"
 )
 
-//  branchCreatePayloadToBSON ...
 func branchCreatePayloadToBSON(payload models.BranchCreatePayload) models.BranchBSON {
 	var (
-		companyID, _ = util.ValidationObjectID(payload.CompanyID)
+		companyID = util.HelperParseStringToObjectID(payload.CompanyID)
 	)
 
 	result := models.BranchBSON{
@@ -22,5 +21,4 @@ func branchCreatePayloadToBSON(payload models.BranchCreatePayload) models.Branch
 		CreatedAt: time.Now(),
 	}
 	return result
-
 }

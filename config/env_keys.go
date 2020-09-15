@@ -4,8 +4,8 @@ package config
 type ENV struct {
 	IsDev bool
 
-	ZookeeperURI     string
-	ZookeeperTestURI string
+	// ZookeeperURI
+	ZookeeperURI string
 
 	//Add port
 	AppPort string

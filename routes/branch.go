@@ -8,7 +8,7 @@ import (
 )
 
 // Branch ...
-func Branch(e *echo.Echo){
-	routes :=e.Group("branches")
-	routes.POST("",controllers.BranchCreate,validations.BranchCreate,companyCheckExistedByID)
+func Branch(e *echo.Echo) {
+	routes := e.Group("branches")
+	routes.POST("", controllers.BranchCreate, validations.BranchCreate, companyCheckExistedByID)
 }

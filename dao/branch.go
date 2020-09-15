@@ -3,8 +3,8 @@ package dao
 import (
 	"context"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"demo-company/models"
 	"demo-company/modules/database"
@@ -17,8 +17,8 @@ func BranchCreate(doc models.BranchBSON) (models.BranchBSON, error) {
 		ctx       = context.Background()
 	)
 
+	// Insert branch
 	_, err := branchCol.InsertOne(ctx, doc)
-
 	return doc, err
 }
 
@@ -31,9 +31,8 @@ func BranchFindByID(id primitive.ObjectID) (models.BranchBSON, error) {
 		filter    = bson.M{"_id": id}
 	)
 
-	// Find
+	// Find branch
 	err := branchCol.FindOne(ctx, filter).Decode(&result)
-
 	return result, err
 }
 
@@ -44,7 +43,7 @@ func BranchUpdateByID(filter bson.M, updateData bson.M) (err error) {
 		ctx       = context.Background()
 	)
 
+	// Update branch
 	_, err = branchCol.UpdateOne(ctx, filter, updateData)
-
 	return err
 }

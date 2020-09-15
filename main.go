@@ -7,10 +7,10 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 
 	"demo-company/config"
+	grpcnode "demo-company/grpc/node"
 	"demo-company/modules/database"
 	"demo-company/modules/zookeeper"
 	"demo-company/routes"
-	grpcnode "demo-company/grpc/node"
 )
 
 func init() {
@@ -45,5 +45,6 @@ func main() {
 		grpcnode.Start()
 	}()
 
+	// Start server
 	server.Logger.Fatal(server.Start(envVars.AppPort))
 }

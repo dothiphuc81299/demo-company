@@ -5,8 +5,8 @@ import (
 	"sync"
 
 	"demo-company/models"
-	"demo-company/util"
 	transactionpb "demo-company/proto/models/transaction"
+	"demo-company/util"
 )
 
 func convertToTransactionDetailList(data []*transactionpb.TransactionDetail) []models.TransactionDetail {

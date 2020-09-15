@@ -10,7 +10,7 @@ import (
 	"demo-company/util"
 )
 
-func getCompanyBriefByID(companyIDString string) (*companypb.GetCompanyBriefByIDResponse, error) {
+func getCompanyBriefByID(companyIDString string) (*companypb.CompanyBrief, error) {
 	var (
 		companyID = util.HelperParseStringToObjectID(companyIDString)
 	)
@@ -23,19 +23,17 @@ func getCompanyBriefByID(companyIDString string) (*companypb.GetCompanyBriefByID
 	}
 
 	// Success
-	result := &companypb.GetCompanyBriefByIDResponse{
-		CompanyBrief: &companypb.CompanyBrief{
-			Id:               companyIDString,
-			Name:             company.Name,
-			CashbackPercent:  company.CashbackPercent,
-			TotalTransaction: company.TotalTransaction,
-			TotalRevenue:     company.TotalRevenue,
-		},
+	result := &companypb.CompanyBrief{
+		Id:               companyIDString,
+		Name:             company.Name,
+		CashbackPercent:  company.CashbackPercent,
+		TotalTransaction: company.TotalTransaction,
+		TotalRevenue:     company.TotalRevenue,
 	}
 	return result, nil
 }
 
-func getBranchBriefByID(branchIDString string) (*companypb.GetBranchBriefByIDResponse, error) {
+func getBranchBriefByID(branchIDString string) (*companypb.BranchBrief, error) {
 	var (
 		branchID = util.HelperParseStringToObjectID(branchIDString)
 	)
@@ -48,18 +46,16 @@ func getBranchBriefByID(branchIDString string) (*companypb.GetBranchBriefByIDRes
 	}
 
 	// Success
-	result := &companypb.GetBranchBriefByIDResponse{
-		BranchBrief: &companypb.BranchBrief{
-			Id:               branchIDString,
-			Name:             branch.Name,
-			TotalTransaction: branch.TotalTransaction,
-			TotalRevenue:     branch.TotalRevenue,
-		},
+	result := &companypb.BranchBrief{
+		Id:               branchIDString,
+		Name:             branch.Name,
+		TotalTransaction: branch.TotalTransaction,
+		TotalRevenue:     branch.TotalRevenue,
 	}
 	return result, nil
 }
 
-func updateCompanyStatsByID(companyIDString string, totalTransaction int64, totalRevenue float64) (*companypb.UpdateCompanyStatsByIDResponse, error) {
+func updateCompanyStatsByID(companyIDString string, totalTransaction int64, totalRevenue float64) error {
 	var (
 		companyID = util.HelperParseStringToObjectID(companyIDString)
 	)
@@ -75,15 +71,12 @@ func updateCompanyStatsByID(companyIDString string, totalTransaction int64, tota
 	err := dao.CompanyUpdateByID(filter, update)
 	if err != nil {
 		err = errors.New("Update CompanyStats error")
-		return nil, err
+		return err
 	}
-
-	// Success
-	result := &companypb.UpdateCompanyStatsByIDResponse{}
-	return result, nil
+	return nil
 }
 
-func updateBranchStatsByID(branchIDString string, totalTransaction int64, totalRevenue float64) (*companypb.UpdateBranchStatsByIDResponse, error) {
+func updateBranchStatsByID(branchIDString string, totalTransaction int64, totalRevenue float64) error {
 	var (
 		branchID = util.HelperParseStringToObjectID(branchIDString)
 	)
@@ -99,10 +92,7 @@ func updateBranchStatsByID(branchIDString string, totalTransaction int64, totalR
 	err := dao.BranchUpdateByID(filter, update)
 	if err != nil {
 		err = errors.New("Update BranchStats error")
-		return nil, err
+		return err
 	}
-
-	// Success
-	result := &companypb.UpdateBranchStatsByIDResponse{}
-	return result, nil
+	return nil
 }

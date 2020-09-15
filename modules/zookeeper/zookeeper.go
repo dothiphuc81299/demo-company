@@ -35,7 +35,7 @@ func Connect() {
 	envVars.Database.URI = string(databaseURI)
 	databaseCompanyName, _, _ := conn.Get("/database/name/company")
 	envVars.Database.Name = string(databaseCompanyName)
-	databaseTestName, _, _ := conn.Get("/database/test/name")
+	databaseTestName, _, _ := conn.Get("/database/test/company")
 	envVars.Database.TestName = string(databaseTestName)
 
 	// GRPCAddresses

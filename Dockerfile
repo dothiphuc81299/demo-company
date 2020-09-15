@@ -1,6 +1,6 @@
 FROM golang:alpine
 
-WORKDIR /go/src/app 
+WORKDIR /go/src/app/company
 
 COPY go.mod go.sum ./
 
