@@ -8,7 +8,6 @@ import (
 	"demo-company/models"
 )
 
-// companyCreatePayload ...
 func companyCreatePayloadToBSON(payload models.CompanyCreatePayload) models.CompanyBSON {
 	result := models.CompanyBSON{
 		ID:              primitive.NewObjectID(),

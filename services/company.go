@@ -14,10 +14,10 @@ func CompanyCreate(payload models.CompanyCreatePayload) (models.CompanyBSON, err
 		company = companyCreatePayloadToBSON(payload)
 	)
 
-	// company created
+	// Create company
 	doc, err := dao.CompanyCreate(company)
 
-	// if err
+	// If err
 	if err != nil {
 		err = errors.New("Khong the tao company")
 		return doc, err
@@ -31,12 +31,11 @@ func TransactionFindByCompanyID(companyID string) ([]models.TransactionDetail, e
 		result = make([]models.TransactionDetail, 0)
 	)
 
-	// Call grpc get Transactions
+	// Call gRPC get Transactions
 	result, err := grpctransaction.GetTransactionDetailByCompanyID(companyID)
 	if err != nil {
 		err = errors.New(err.Error())
 		return result, err
 	}
-
 	return result, err
 }

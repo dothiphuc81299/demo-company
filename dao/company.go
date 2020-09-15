@@ -17,7 +17,7 @@ func CompanyCreate(doc models.CompanyBSON) (models.CompanyBSON, error) {
 		ctx        = context.Background()
 	)
 
-	// InsertOne ...
+	// Insert company
 	_, err := companyCol.InsertOne(ctx, doc)
 	return doc, err
 }
@@ -31,9 +31,8 @@ func CompanyFindByID(id primitive.ObjectID) (models.CompanyBSON, error) {
 		filter     = bson.M{"_id": id}
 	)
 
-	// Find
+	// Find company
 	err := companyCol.FindOne(ctx, filter).Decode(&result)
-
 	return result, err
 }
 
@@ -44,7 +43,7 @@ func CompanyUpdateByID(filter bson.M, updateData bson.M) (err error) {
 		ctx        = context.Background()
 	)
 
+	// Update company
 	_, err = companyCol.UpdateOne(ctx, filter, updateData)
-
 	return err
 }

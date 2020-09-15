@@ -8,7 +8,6 @@ import (
 	"demo-company/util"
 )
 
-// companyCheckExistedByID ...
 func companyCheckExistedByID(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var (
@@ -17,11 +16,10 @@ func companyCheckExistedByID(next echo.HandlerFunc) echo.HandlerFunc {
 
 		company, _ := dao.CompanyFindByID(companyID)
 
-		// check existed
+		// Check existed
 		if company.ID.IsZero() {
 			return util.Response404(c, nil, "Khong tim thay company")
 		}
 		return next(c)
 	}
-
 }

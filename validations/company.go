@@ -14,17 +14,16 @@ func CompanyCreate(next echo.HandlerFunc) echo.HandlerFunc {
 			doc models.CompanyCreatePayload
 		)
 
+		// Validate CompanyCreatePayload
 		c.Bind(&doc)
-
 		err := doc.Validate()
 
-		//if err
+		// If err
 		if err != nil {
 			return util.Response400(c, nil, err.Error())
 		}
 
 		c.Set("companyPayload", doc)
-
 		return next(c)
 	}
 }
@@ -33,11 +32,13 @@ func CompanyCreate(next echo.HandlerFunc) echo.HandlerFunc {
 func CompanyValidateID(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var (
-			id             = c.Param("id")
-			companyID, err = util.ValidationObjectID(id)
+			id = c.Param("id")
 		)
 
-		// if err
+		// Validate companyID
+		companyID, err := util.ValidationObjectID(id)
+
+		// If err
 		if err != nil {
 			return util.Response400(c, nil, "ID khong hop le")
 		}

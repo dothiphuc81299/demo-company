@@ -1,12 +1,10 @@
 package validations
 
-import(
+import (
 	"github.com/labstack/echo/v4"
 
-	"demo-company/models"	
+	"demo-company/models"
 	"demo-company/util"
-
-
 )
 
 // BranchCreate ..
@@ -16,25 +14,16 @@ func BranchCreate(next echo.HandlerFunc) echo.HandlerFunc {
 			doc models.BranchCreatePayload
 		)
 
+		// Validate BranchCreatePayload
 		c.Bind(&doc)
+		err := doc.Validate()
 
-		err :=doc.Validate()
-
-		//if err
+		// If err
 		if err != nil {
 			return util.Response400(c, nil, err.Error())
 		}
 
-		// Validate object id
-		companyID, err := util.ValidationObjectID(doc.CompanyID)
-		
-		if err != nil {
-			return util.Response400(c, nil, err.Error())
-		}
-
-		c.Set("branchPayload",doc)
-		c.Set("companyID",companyID)
-
+		c.Set("branchPayload", doc)
 		return next(c)
 	}
 }
