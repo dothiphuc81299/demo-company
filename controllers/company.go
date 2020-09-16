@@ -23,7 +23,7 @@ func CompanyCreate(c echo.Context) error {
 		return util.Response400(c, nil, err.Error())
 	}
 
-	// success...
+	// Success
 	return util.Response200(c, bson.M{
 		"_id":       rawData.ID,
 		"createdAt": rawData.CreatedAt,
@@ -36,7 +36,7 @@ func TransactionFindByCompanyID(c echo.Context) error {
 		companyID = c.Param("id")
 	)
 
-	// process data
+	// Process data
 	rawData, err := services.TransactionFindByCompanyID(companyID)
 
 	// if err

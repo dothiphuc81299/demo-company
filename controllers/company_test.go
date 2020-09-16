@@ -1,78 +1,76 @@
-package test
+package controllers_test
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"encoding/json"
-	"fmt"
 
 	"github.com/labstack/echo/v4"
-	"github.com/xeipuuv/gojsonschema"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
+	"github.com/xeipuuv/gojsonschema"
 	"go.mongodb.org/mongo-driver/bson"
 
-	"demo-company/util"
+	"demo-company/apptest"
 	"demo-company/models"
 	"demo-company/modules/database"
-	"demo-company/apptest"
+	"demo-company/util"
 )
-
 
 type CompanyCreateSuite struct {
 	suite.Suite
-	e *echo.Echo
+	e    *echo.Echo
 	data models.CompanyCreatePayload
 }
 
 func (suite *CompanyCreateSuite) SetupSuite() {
-	// init server ... 
-	suite.e= apptest.InitServer()
+	// Init server ...
+	suite.e = apptest.InitServer()
 
-	// clear data
-	RemoveOldDataCompany()
+	// Clear data
+	removeOldDataCompany()
 
-	// set up payload data 
+	// Setup payload data
 	suite.data = models.CompanyCreatePayload{
-		Name :"Phuc Mars",
-		CashbackPercent:19.2,
+		Name:            "UserTest",
+		CashbackPercent: 19.2,
 	}
 }
 
 func (suite *CompanyCreateSuite) TearDownSuite() {
-	RemoveOldDataCompany()
-}
-
-func RemoveOldDataCompany() {
-	database.CompanyCol().DeleteMany(context.Background(), bson.M{})
+	removeOldDataCompany()
 }
 
 func (suite *CompanyCreateSuite) TestCompanyCreateSuccess() {
 	var (
-			response util.Response
-			payload = suite.data	
-			schemaLoader = gojsonschema.NewReferenceLoader("file:///home/phuc/go/src/demo-company/schema/company_create.json")
+		response     util.Response
+		payload      = suite.data
+		schemaLoader = gojsonschema.NewReferenceLoader("file:///home/phuc/go/src/demo-company/schema/company_create.json")
 	)
 	
-	//set up request
-	req, _ := http.NewRequest(http.MethodPost, "/companies", util.HelperToIOReader(payload))
+	// Setup request
+	req, err := http.NewRequest(http.MethodPost, "/companies", util.HelperToIOReader(payload))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	res := httptest.NewRecorder()
-	
-	 // Run HTTP server
+
+	// Run HTTP server
 	suite.e.ServeHTTP(res, req)
 
-	//parse .. 
-	json.Unmarshal([]byte(res.Body.String()), &response)	
-	documentLoader := gojsonschema.NewGoLoader(response)
+	// Parse
+	json.Unmarshal([]byte(res.Body.String()), &response)
 
+	// Create JSONLoader from go struct
+	documentLoader := gojsonschema.NewGoLoader(response)
+	
+	// Validate json response
 	result, err := gojsonschema.Validate(schemaLoader, documentLoader)
+	
 	if err != nil {
 		panic(err.Error())
 	}
-
 	if result.Valid() {
 		fmt.Printf("The document is valid\n")
 	} else {
@@ -81,23 +79,23 @@ func (suite *CompanyCreateSuite) TestCompanyCreateSuccess() {
 			fmt.Printf("- %s\n", desc)
 		}
 	}
-	
-	//Test
+
+	// Test
+	assert.Equal(suite.T(), true, result.Valid())
 	assert.Equal(suite.T(), http.StatusOK, res.Code)
 	assert.NotEqual(suite.T(), nil, response["data"])
-	assert.Equal(suite.T(), "thanh cong!", response["message"])
 }
 
 func (suite *CompanyCreateSuite) TestCompanyCreateFailureWithInvalidName() {
-		var (
-			response util.Response
-			payload = models.CompanyCreatePayload{
-				Name:           "",
-				CashbackPercent: 19.2,
-			}
+	var (
+		response util.Response
+		payload  = models.CompanyCreatePayload{
+			Name:            "",
+			CashbackPercent: suite.data.CashbackPercent,
+		}
 	)
-	
-	//set up request
+
+	// Setup request
 	req, _ := http.NewRequest(http.MethodPost, "/companies", util.HelperToIOReader(payload))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	res := httptest.NewRecorder()
@@ -105,25 +103,24 @@ func (suite *CompanyCreateSuite) TestCompanyCreateFailureWithInvalidName() {
 	// Run HTTP server
 	suite.e.ServeHTTP(res, req)
 
-	//parse .. 
-	json.Unmarshal([]byte(res.Body.String()), &response)	
+	// Parse ..
+	json.Unmarshal([]byte(res.Body.String()), &response)
 
-	//Test
+	// Test
 	assert.Equal(suite.T(), http.StatusBadRequest, res.Code)
 	assert.Equal(suite.T(), nil, response["data"])
-	assert.NotEqual(suite.T(), "thanh cong!", response["message"])
 }
 
 func (suite *CompanyCreateSuite) TestCompanyCreateFailureWithCashbackPercent() {
-		var (
-			response util.Response
-			payload = models.CompanyCreatePayload{
-				Name:           "PhucMassr",
-				CashbackPercent: 0,
-			}
+	var (
+		response util.Response
+		payload  = models.CompanyCreatePayload{
+			Name:            suite.data.Name,
+			CashbackPercent: 0,
+		}
 	)
 
-	//set up request
+	// Setup request
 	req, _ := http.NewRequest(http.MethodPost, "/companies", util.HelperToIOReader(payload))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	res := httptest.NewRecorder()
@@ -131,13 +128,12 @@ func (suite *CompanyCreateSuite) TestCompanyCreateFailureWithCashbackPercent() {
 	// Run HTTP server
 	suite.e.ServeHTTP(res, req)
 
-	//parse .. 
-	json.Unmarshal([]byte(res.Body.String()), &response)	
+	// Parse ..
+	json.Unmarshal([]byte(res.Body.String()), &response)
 
-	//Test
+	// Test
 	assert.Equal(suite.T(), http.StatusBadRequest, res.Code)
 	assert.Equal(suite.T(), nil, response["data"])
-	assert.NotEqual(suite.T(), "thanh cong!", response["message"])
 }
 
 type TransactionFindByCompanyIDSuite struct {
@@ -147,24 +143,24 @@ type TransactionFindByCompanyIDSuite struct {
 }
 
 func (suite *TransactionFindByCompanyIDSuite) SetupSuite() {
-	// set up server ... 
-	suite.e =apptest.InitServer()
+	// Setup server
+	suite.e = apptest.InitServer()
 
-	// clear data ...
-	RemoveOldDataCompany()
+	// Clear data
+	removeOldDataCompany()
 
-	//set up data 
+	// Setup data
 	suite.paramURL = util.HelperCompanyCreateFake()
 }
 
 func (suite *TransactionFindByCompanyIDSuite) TearDownSuite() {
-	RemoveOldDataCompany()
+	removeOldDataCompany()
 }
-
 
 func (suite *TransactionFindByCompanyIDSuite) TestTransactionFindByCompanyIDSuccess() {
 	var (
-		response util.Response
+		response     util.Response
+		schemaLoader = gojsonschema.NewReferenceLoader("file:///home/phuc/go/src/demo-company/schema/company_create.json")
 	)
 
 	// Setup request
@@ -176,15 +172,32 @@ func (suite *TransactionFindByCompanyIDSuite) TestTransactionFindByCompanyIDSucc
 	// Run HTTP server
 	suite.e.ServeHTTP(rec, req)
 
-	//Parse
+	// Parse
 	json.Unmarshal([]byte(rec.Body.String()), &response)
 
-	//Test
+	// Create JSONLoader from go struct
+	documentLoader := gojsonschema.NewGoLoader(response)
+
+	// Validate json response
+	result, err := gojsonschema.Validate(schemaLoader, documentLoader)
+	if err != nil {
+		panic(err.Error())
+	}
+	if result.Valid() {
+		fmt.Printf("The document is valid\n")
+	} else {
+		fmt.Printf("The document is not valid. see errors :\n")
+		for _, desc := range result.Errors() {
+			fmt.Printf("- %s\n", desc)
+		}
+	}
+
+	// Test
+	assert.Equal(suite.T(), true, result.Valid())
 	assert.Equal(suite.T(), http.StatusOK, rec.Code)
-	assert.Equal(suite.T(), "thanh cong!", response["message"])
 }
 
-func (suite *TransactionFindByCompanyIDSuite) TestTransactionFindByCompanyIDFailureWithInvalidUCompanyID() {
+func (suite *TransactionFindByCompanyIDSuite) TestTransactionFindByCompanyIDFailureWithInvalidCompanyID() {
 	var (
 		response util.Response
 		paramURL = "123"
@@ -233,4 +246,8 @@ func (suite *TransactionFindByCompanyIDSuite) TestTransactionFindByCompanyIDFail
 func TestCompanySuite(t *testing.T) {
 	suite.Run(t, new(CompanyCreateSuite))
 	suite.Run(t, new(TransactionFindByCompanyIDSuite))
+}
+
+func removeOldDataCompany() {
+	database.CompanyCol().DeleteMany(context.Background(), bson.M{})
 }

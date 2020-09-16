@@ -11,5 +11,5 @@ import (
 func Company(e *echo.Echo) {
 	routes := e.Group("companies")
 	routes.POST("", controllers.CompanyCreate, validations.CompanyCreate)
-	routes.GET("/:id/transactions", controllers.TransactionFindByCompanyID, validations.CompanyValidateID, companyCheckExistedByID)
+	routes.GET("/:id/transactions", controllers.TransactionFindByCompanyID, validations.CompanyCheckExistedByCompanyID)
 }

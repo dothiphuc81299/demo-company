@@ -2,24 +2,24 @@ package util
 
 import (
 	"bytes"
-	"encoding/json"
-	"io"
 	"context"
-	"log"
+	"encoding/json"
 	"fmt"
+	"io"
+	"log"
 
 	"demo-company/config"
-	"demo-company/modules/database"
 	"demo-company/models"
+	"demo-company/modules/database"
 )
 
 var (
-	companyIDString ="5f24d45125ea51bc57a8285c"
-	companyID = HelperParseStringToObjectID(companyIDString)
-	company = models.CompanyBSON{
+	companyIDString = "5f24d45125ea51bc57a8285c"
+	companyID,_       = HelperParseStringToObjectID(companyIDString)
+	company         = models.CompanyBSON{
 		ID:               companyID,
 		Name:             "PhucMars",
-		CashbackPercent:   10.5,
+		CashbackPercent:  10.5,
 		TotalRevenue:     10.3,
 		TotalTransaction: 11,
 	}
@@ -51,13 +51,10 @@ func HelperCompanyCreateFake() string {
 		ctx        = context.Background()
 	)
 
-	// Insert
-	_, err := companyCol.InsertOne(ctx,company)
-
-	// err 
+	// Insert company
+	_, err := companyCol.InsertOne(ctx, company)
 	if err != nil {
 		log.Println(err)
 	}
-
-	return 	companyIDString
+	return companyIDString
 }

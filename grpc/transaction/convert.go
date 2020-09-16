@@ -5,8 +5,8 @@ import (
 	"sync"
 
 	"demo-company/models"
-	"demo-company/util"
 	transactionpb "demo-company/proto/models/transaction"
+	"demo-company/util"
 )
 
 func convertToTransactionDetailList(data []*transactionpb.TransactionDetail) []models.TransactionDetail {
@@ -44,10 +44,10 @@ func convertToTransactionDetailList(data []*transactionpb.TransactionDetail) []m
 
 func convertToTransactionDetail(transaction *transactionpb.TransactionDetail) models.TransactionDetail {
 	var (
-		id        = util.HelperParseStringToObjectID(transaction.Id)
-		companyID = util.HelperParseStringToObjectID(transaction.CompanyID)
-		branchID  = util.HelperParseStringToObjectID(transaction.BranchID)
-		userID    = util.HelperParseStringToObjectID(transaction.UserID)
+		id,_        = util.HelperParseStringToObjectID(transaction.Id)
+		companyID,_ = util.HelperParseStringToObjectID(transaction.CompanyID)
+		branchID,_  = util.HelperParseStringToObjectID(transaction.BranchID)
+		userID,_    = util.HelperParseStringToObjectID(transaction.UserID)
 		createdAt = util.HelperConvertTimestampProtoToTime(transaction.CreatedAt)
 	)
 

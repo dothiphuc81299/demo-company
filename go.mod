@@ -2,10 +2,7 @@ module demo-company
 
 go 1.14
 
-replace demo-company/proto v0.0.0 => ./proto
-
 require (
-	demo-company/proto v0.0.0
 	github.com/go-ozzo/ozzo-validation/v4 v4.2.2
 	github.com/golang/protobuf v1.4.2
 	github.com/labstack/echo/v4 v4.1.17

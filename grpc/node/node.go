@@ -21,8 +21,11 @@ func (s *Node) GetCompanyBriefByID(ctx context.Context, req *companypb.GetCompan
 	)
 
 	// Get Company by id
-	result, err := getCompanyBriefByID(companyID)
+	data, err := getCompanyBriefByID(companyID)
 
+	result := &companypb.GetCompanyBriefByIDResponse{
+		CompanyBrief: data,
+	}
 	return result, err
 }
 
@@ -33,8 +36,11 @@ func (s *Node) GetBranchBriefByID(ctx context.Context, req *companypb.GetBranchB
 	)
 
 	// Get Branch by id
-	result, err := getBranchBriefByID(branchID)
+	data, err := getBranchBriefByID(branchID)
 
+	result := &companypb.GetBranchBriefByIDResponse{
+		BranchBrief: data,
+	}
 	return result, err
 }
 
@@ -47,8 +53,9 @@ func (s *Node) UpdateCompanyStatsByID(ctx context.Context, req *companypb.Update
 	)
 
 	// Update CompanyStats
-	result, err := updateCompanyStatsByID(companyID, totalTransaction, totalRevenue)
+	err := updateCompanyStatsByID(companyID, totalTransaction, totalRevenue)
 
+	result := &companypb.UpdateCompanyStatsByIDResponse{}
 	return result, err
 }
 
@@ -61,8 +68,9 @@ func (s *Node) UpdateBranchStatsByID(ctx context.Context, req *companypb.UpdateB
 	)
 
 	// Update BranchStats
-	result, err := updateBranchStatsByID(branchID, totalTransaction, totalRevenue)
+	err := updateBranchStatsByID(branchID, totalTransaction, totalRevenue)
 
+	result := &companypb.UpdateBranchStatsByIDResponse{}
 	return result, err
 }
 
@@ -81,6 +89,7 @@ func Start() {
 	s := grpc.NewServer()
 	companypb.RegisterCompanyServiceServer(s, &Node{})
 
+	// Start Server
 	log.Println(" gRPC server started on port:" + companyPort)
 	err = s.Serve(lis)
 	if err != nil {
