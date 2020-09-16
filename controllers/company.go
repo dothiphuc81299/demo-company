@@ -6,7 +6,7 @@ import (
 
 	"demo-company/models"
 	"demo-company/services"
-	"demo-company/util"
+	"demo-company/utils"
 )
 
 // CompanyCreate ...
@@ -20,11 +20,11 @@ func CompanyCreate(c echo.Context) error {
 
 	// if err
 	if err != nil {
-		return util.Response400(c, nil, err.Error())
+		return utils.Response400(c, nil, err.Error())
 	}
 
 	// Success
-	return util.Response200(c, bson.M{
+	return utils.Response200(c, bson.M{
 		"_id":       rawData.ID,
 		"createdAt": rawData.CreatedAt,
 	}, "")
@@ -41,9 +41,9 @@ func TransactionFindByCompanyID(c echo.Context) error {
 
 	// if err
 	if err != nil {
-		return util.Response400(c, nil, err.Error())
+		return utils.Response400(c, nil, err.Error())
 	}
 
 	// Success
-	return util.Response200(c, rawData, "")
+	return utils.Response200(c, rawData, "")
 }

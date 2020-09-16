@@ -1,4 +1,4 @@
-package util
+package utils
 
 import (
 	"net/http"
@@ -28,7 +28,7 @@ func Response200(c echo.Context, data interface{}, message string) error {
 // Response400 ...
 func Response400(c echo.Context, data interface{}, message string) error {
 	if message == "" {
-		message = "Du lieu khong hop le"
+		message = "du lieu khong hop le"
 	}
 	return c.JSON(http.StatusBadRequest, generateResponse(data, message))
 }
@@ -36,7 +36,7 @@ func Response400(c echo.Context, data interface{}, message string) error {
 // Response404 ...
 func Response404(c echo.Context, data interface{}, message string) error {
 	if message == "" {
-		message = " Du lieu khong tim thay"
+		message = " du lieu khong tim thay"
 	}
 	return c.JSON(http.StatusNotFound, generateResponse(data, message))
 }

@@ -17,7 +17,7 @@ import (
 	"demo-company/apptest"
 	"demo-company/models"
 	"demo-company/modules/database"
-	"demo-company/util"
+	"demo-company/utils"
 )
 
 type CompanyCreateSuite struct {
@@ -46,13 +46,13 @@ func (suite *CompanyCreateSuite) TearDownSuite() {
 
 func (suite *CompanyCreateSuite) TestCompanyCreateSuccess() {
 	var (
-		response     util.Response
+		response     utils.Response
 		payload      = suite.data
-		schemaLoader = gojsonschema.NewReferenceLoader("file:///home/phuc/go/src/demo-company/schema/company_create.json")
+		schemaLoader = gojsonschema.NewReferenceLoader("file:///home/phuc/go/src/demo-company/schemas/company_create.json")
 	)
 	
 	// Setup request
-	req, err := http.NewRequest(http.MethodPost, "/companies", util.HelperToIOReader(payload))
+	req, err := http.NewRequest(http.MethodPost, "/companies", utils.HelperToIOReader(payload))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	res := httptest.NewRecorder()
 
@@ -88,7 +88,7 @@ func (suite *CompanyCreateSuite) TestCompanyCreateSuccess() {
 
 func (suite *CompanyCreateSuite) TestCompanyCreateFailureWithInvalidName() {
 	var (
-		response util.Response
+		response utils.Response
 		payload  = models.CompanyCreatePayload{
 			Name:            "",
 			CashbackPercent: suite.data.CashbackPercent,
@@ -96,7 +96,7 @@ func (suite *CompanyCreateSuite) TestCompanyCreateFailureWithInvalidName() {
 	)
 
 	// Setup request
-	req, _ := http.NewRequest(http.MethodPost, "/companies", util.HelperToIOReader(payload))
+	req, _ := http.NewRequest(http.MethodPost, "/companies", utils.HelperToIOReader(payload))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	res := httptest.NewRecorder()
 
@@ -113,7 +113,7 @@ func (suite *CompanyCreateSuite) TestCompanyCreateFailureWithInvalidName() {
 
 func (suite *CompanyCreateSuite) TestCompanyCreateFailureWithCashbackPercent() {
 	var (
-		response util.Response
+		response utils.Response
 		payload  = models.CompanyCreatePayload{
 			Name:            suite.data.Name,
 			CashbackPercent: 0,
@@ -121,7 +121,7 @@ func (suite *CompanyCreateSuite) TestCompanyCreateFailureWithCashbackPercent() {
 	)
 
 	// Setup request
-	req, _ := http.NewRequest(http.MethodPost, "/companies", util.HelperToIOReader(payload))
+	req, _ := http.NewRequest(http.MethodPost, "/companies", utils.HelperToIOReader(payload))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	res := httptest.NewRecorder()
 
@@ -150,7 +150,7 @@ func (suite *TransactionFindByCompanyIDSuite) SetupSuite() {
 	removeOldDataCompany()
 
 	// Setup data
-	suite.paramURL = util.HelperCompanyCreateFake()
+	suite.paramURL = utils.HelperCompanyCreateFake()
 }
 
 func (suite *TransactionFindByCompanyIDSuite) TearDownSuite() {
@@ -159,8 +159,8 @@ func (suite *TransactionFindByCompanyIDSuite) TearDownSuite() {
 
 func (suite *TransactionFindByCompanyIDSuite) TestTransactionFindByCompanyIDSuccess() {
 	var (
-		response     util.Response
-		schemaLoader = gojsonschema.NewReferenceLoader("file:///home/phuc/go/src/demo-company/schema/company_create.json")
+		response     utils.Response
+		schemaLoader = gojsonschema.NewReferenceLoader("file:///home/phuc/go/src/demo-company/schemas/company_create.json")
 	)
 
 	// Setup request
@@ -199,7 +199,7 @@ func (suite *TransactionFindByCompanyIDSuite) TestTransactionFindByCompanyIDSucc
 
 func (suite *TransactionFindByCompanyIDSuite) TestTransactionFindByCompanyIDFailureWithInvalidCompanyID() {
 	var (
-		response util.Response
+		response utils.Response
 		paramURL = "123"
 	)
 
@@ -222,7 +222,7 @@ func (suite *TransactionFindByCompanyIDSuite) TestTransactionFindByCompanyIDFail
 
 func (suite *TransactionFindByCompanyIDSuite) TestTransactionFindByCompanyIDFailureWithNotFoundCompanyID() {
 	var (
-		response util.Response
+		response utils.Response
 		paramURL = "5f24d45125ea51bc11111111"
 	)
 

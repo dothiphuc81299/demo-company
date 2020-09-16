@@ -26,10 +26,4 @@ type (
 		TotalRevenue     float64            `json:"totalRevenue"`
 		CreatedAt        time.Time          `json:"createdAt"`
 	}
-
-	// CompanyBrief ...
-	CompanyBrief struct {
-		ID   primitive.ObjectID `json:"_id"`
-		Name string             `json:"name"`
-	}
 )

@@ -6,7 +6,7 @@ import (
 
 	"demo-company/models"
 	"demo-company/services"
-	"demo-company/util"
+	"demo-company/utils"
 )
 
 // BranchCreate ...
@@ -20,11 +20,11 @@ func BranchCreate(c echo.Context) error {
 
 	// if err
 	if err != nil {
-		return util.Response400(c, nil, err.Error())
+		return utils.Response400(c, nil, err.Error())
 	}
 
 	// Success
-	return util.Response200(c, bson.M{
+	return utils.Response200(c, bson.M{
 		"_id":       rawData.ID,
 		"createdAt": rawData.CreatedAt,
 	}, "")

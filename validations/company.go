@@ -5,7 +5,7 @@ import (
 
 	"demo-company/dao"
 	"demo-company/models"
-	"demo-company/util"
+	"demo-company/utils"
 )
 
 // CompanyCreate ..
@@ -21,7 +21,7 @@ func CompanyCreate(next echo.HandlerFunc) echo.HandlerFunc {
 
 		// If err
 		if err != nil {
-			return util.Response400(c, nil, err.Error())
+			return utils.Response400(c, nil, err.Error())
 		}
 
 		c.Set("companyPayload", doc)
@@ -37,11 +37,11 @@ func CompanyCheckExistedByCompanyID(next echo.HandlerFunc) echo.HandlerFunc {
 		)
 
 		// Validate companyID
-		companyID, err := util.HelperParseStringToObjectID(id)
+		companyID, err := utils.ValidationObjectID(id)
 
 		// If err
 		if err != nil {
-			return util.Response400(c, nil, err.Error())
+			return utils.Response400(c, nil, err.Error())
 		}
 
 		//check data
@@ -49,7 +49,7 @@ func CompanyCheckExistedByCompanyID(next echo.HandlerFunc) echo.HandlerFunc {
 
 		// if err
 		if company.ID.IsZero() {
-			return util.Response404(c, nil, err.Error())
+			return utils.Response404(c, nil, err.Error())
 		}
 		
 		c.Set("companyExisted", company)

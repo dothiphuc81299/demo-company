@@ -5,7 +5,7 @@ import (
 
 	"demo-company/models"
 	"demo-company/dao"
-	"demo-company/util"
+	"demo-company/utils"
 )
 
 // BranchCreate ..
@@ -21,22 +21,17 @@ func BranchCreate(next echo.HandlerFunc) echo.HandlerFunc {
 
 		// If err
 		if err != nil {
-			return util.Response400(c, nil, err.Error())
+			return utils.Response400(c, nil, err.Error())
 		}
 
-		companyID,err := util.HelperParseStringToObjectID(payload.Company)
-
-		// if err
-		if err != nil {
-			return util.Response400(c, nil, err.Error())
-		}
+		companyID := utils.HelperParseStringToObjectID(payload.Company)
 
 		//check data
 		company, _ := dao.CompanyFindByID(companyID)
 
 		// if err
 		if company.ID.IsZero() {
-			return util.Response404(c, nil, err.Error())
+			return utils.Response404(c, nil, err.Error())
 		}
 
 		payload.CompanyID = company.ID

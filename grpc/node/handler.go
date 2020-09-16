@@ -7,12 +7,12 @@ import (
 
 	"demo-company/dao"
 	companypb "demo-company/proto/models/company"
-	"demo-company/util"
+	"demo-company/utils"
 )
 
 func getCompanyBriefByID(companyIDString string) (*companypb.CompanyBrief, error) {
 	var (
-		companyID,_ = util.HelperParseStringToObjectID(companyIDString)
+		companyID = utils.HelperParseStringToObjectID(companyIDString)
 	)
 
 	// Find Company
@@ -35,7 +35,7 @@ func getCompanyBriefByID(companyIDString string) (*companypb.CompanyBrief, error
 
 func getBranchBriefByID(branchIDString string) (*companypb.BranchBrief, error) {
 	var (
-		branchID,_ = util.HelperParseStringToObjectID(branchIDString)
+		branchID = utils.HelperParseStringToObjectID(branchIDString)
 	)
 
 	// Find Branch
@@ -57,7 +57,7 @@ func getBranchBriefByID(branchIDString string) (*companypb.BranchBrief, error) {
 
 func updateCompanyStatsByID(companyIDString string, totalTransaction int64, totalRevenue float64) error {
 	var (
-		companyID,_ = util.HelperParseStringToObjectID(companyIDString)
+		companyID = utils.HelperParseStringToObjectID(companyIDString)
 	)
 
 	// Set filter and update
@@ -78,7 +78,7 @@ func updateCompanyStatsByID(companyIDString string, totalTransaction int64, tota
 
 func updateBranchStatsByID(branchIDString string, totalTransaction int64, totalRevenue float64) error {
 	var (
-		branchID,_ = util.HelperParseStringToObjectID(branchIDString)
+		branchID = utils.HelperParseStringToObjectID(branchIDString)
 	)
 
 	// Set filter and update

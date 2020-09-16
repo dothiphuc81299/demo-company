@@ -17,7 +17,7 @@ import (
 	"demo-company/apptest"
 	"demo-company/models"
 	"demo-company/modules/database"
-	"demo-company/util"
+	"demo-company/utils"
 )
 
 type BranchSuite struct {
@@ -44,12 +44,12 @@ func (suite *BranchSuite) TearDownSuite() {
 func (suite *BranchSuite) TestBranchCreateSuccess() {
 	var (
 		payload      = suite.data
-		response     util.Response
-		schemaLoader = gojsonschema.NewReferenceLoader("file:///home/phuc/go/src/demo-company/schema/branch_create.json")
+		response     utils.Response
+		schemaLoader = gojsonschema.NewReferenceLoader("file:///home/phuc/go/src/demo-company/schemas/branch_create.json")
 	)
 
 	// Setup request
-	req, _ := http.NewRequest(http.MethodPost, "/branches", util.HelperToIOReader(payload))
+	req, _ := http.NewRequest(http.MethodPost, "/branches", utils.HelperToIOReader(payload))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	res := httptest.NewRecorder()
 
@@ -88,11 +88,11 @@ func (suite *BranchSuite) TestBranchCreateFailureWithInvalidCompanyID() {
 			Company: "08282882",
 			Name:      suite.data.Name,
 		}
-		response util.Response
+		response utils.Response
 	)
 
 	// Setup request
-	req, _ := http.NewRequest(http.MethodPost, "/branches", util.HelperToIOReader(payload))
+	req, _ := http.NewRequest(http.MethodPost, "/branches", utils.HelperToIOReader(payload))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	res := httptest.NewRecorder()
 
@@ -113,11 +113,11 @@ func (suite *BranchSuite) TestBranchCreateFailureWithInvalidName() {
 			CompanyID: suite.data.CompanyID,
 			Name:      "89",
 		}
-		response util.Response
+		response utils.Response
 	)
 
 	// Setup request
-	req, _ := http.NewRequest(http.MethodPost, "/branches", util.HelperToIOReader(payload))
+	req, _ := http.NewRequest(http.MethodPost, "/branches", utils.HelperToIOReader(payload))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	res := httptest.NewRecorder()
 
@@ -138,11 +138,11 @@ func (suite *BranchSuite) TestBranchCreateFailureWithNotFoundCompany() {
 			Company: "5f24d45125ea51bc57a8285p",
 			Name:      suite.data.Name,
 		}
-		response util.Response
+		response utils.Response
 	)
 
 	// Setup request
-	req, _ := http.NewRequest(http.MethodPost, "/branches", util.HelperToIOReader(payload))
+	req, _ := http.NewRequest(http.MethodPost, "/branches", utils.HelperToIOReader(payload))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	res := httptest.NewRecorder()
 
@@ -163,7 +163,7 @@ func TestBranchSuite(t *testing.T) {
 
 func setupDataBranch() models.BranchCreatePayload {
 	var (
-		companyIDString = util.HelperCompanyCreateFake()
+		companyIDString = utils.HelperCompanyCreateFake()
 	)
 	payload := models.BranchCreatePayload{
 		Company: companyIDString,
