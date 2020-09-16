@@ -3,8 +3,9 @@ package validations
 import (
 	"github.com/labstack/echo/v4"
 
+	"demo-company/dao"
 	"demo-company/models"
-	"demo-company/util"
+	"demo-company/utils"
 )
 
 // CompanyCreate ..
@@ -20,7 +21,7 @@ func CompanyCreate(next echo.HandlerFunc) echo.HandlerFunc {
 
 		// If err
 		if err != nil {
-			return util.Response400(c, nil, err.Error())
+			return utils.Response400(c, nil, err.Error())
 		}
 
 		c.Set("companyPayload", doc)
@@ -28,22 +29,32 @@ func CompanyCreate(next echo.HandlerFunc) echo.HandlerFunc {
 	}
 }
 
-// CompanyValidateID ...
-func CompanyValidateID(next echo.HandlerFunc) echo.HandlerFunc {
+// CompanyCheckExistedByCompanyID ...
+func CompanyCheckExistedByCompanyID(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var (
 			id = c.Param("id")
 		)
 
 		// Validate companyID
-		companyID, err := util.ValidationObjectID(id)
+		companyID, err := utils.ValidationObjectID(id)
 
 		// If err
 		if err != nil {
-			return util.Response400(c, nil, "ID khong hop le")
+			return utils.Response400(c, nil, err.Error())
 		}
 
-		c.Set("companyID", companyID)
+		//check data
+		company, err := dao.CompanyFindByID(companyID)
+
+		// if err
+		if company.ID.IsZero() {
+			return utils.Response404(c, nil, err.Error())
+		}
+		
+		c.Set("companyExisted", company)
+
 		return next(c)
 	}
 }
+

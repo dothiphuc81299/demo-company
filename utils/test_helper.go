@@ -1,4 +1,4 @@
-package util
+package utils
 
 import (
 	"bytes"
@@ -15,7 +15,7 @@ import (
 
 var (
 	companyIDString = "5f24d45125ea51bc57a8285c"
-	companyID       = HelperParseStringToObjectID(companyIDString)
+	companyID     = HelperParseStringToObjectID(companyIDString)
 	company         = models.CompanyBSON{
 		ID:               companyID,
 		Name:             "PhucMars",

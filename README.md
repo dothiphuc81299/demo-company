@@ -8,3 +8,6 @@ Make coverage
 
 # how to update proto file
 git submodule update --init --recursive
+
+# how to display % coverage 
+go tool cover -html=coverage.out

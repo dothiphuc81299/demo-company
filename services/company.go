@@ -11,7 +11,7 @@ import (
 // CompanyCreate ...
 func CompanyCreate(payload models.CompanyCreatePayload) (models.CompanyBSON, error) {
 	var (
-		company = companyCreatePayloadToBSON(payload)
+		company = payload.ConvertToBSON()
 	)
 
 	// Create company
@@ -19,7 +19,7 @@ func CompanyCreate(payload models.CompanyCreatePayload) (models.CompanyBSON, err
 
 	// If err
 	if err != nil {
-		err = errors.New("Khong the tao company")
+		err = errors.New("khong the tao company")
 		return doc, err
 	}
 	return doc, err

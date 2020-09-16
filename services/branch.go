@@ -10,7 +10,7 @@ import (
 // BranchCreate ...
 func BranchCreate(payload models.BranchCreatePayload) (models.BranchBSON, error) {
 	var (
-		branch = branchCreatePayloadToBSON(payload)
+		branch = payload.ConvertToBSON()
 	)
 
 	// Create branch

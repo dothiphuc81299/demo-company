@@ -1,4 +1,4 @@
-package util
+package utils
 
 import (
 	"time"
@@ -9,8 +9,8 @@ import (
 )
 
 // HelperParseStringToObjectID ...
-func HelperParseStringToObjectID(val string) primitive.ObjectID {
-	result, _ := primitive.ObjectIDFromHex(val)
+func HelperParseStringToObjectID(val string) (primitive.ObjectID){
+	result,_ := primitive.ObjectIDFromHex(val)
 	return result
 }
 

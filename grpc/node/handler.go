@@ -7,18 +7,18 @@ import (
 
 	"demo-company/dao"
 	companypb "demo-company/proto/models/company"
-	"demo-company/util"
+	"demo-company/utils"
 )
 
 func getCompanyBriefByID(companyIDString string) (*companypb.CompanyBrief, error) {
 	var (
-		companyID = util.HelperParseStringToObjectID(companyIDString)
+		companyID = utils.HelperParseStringToObjectID(companyIDString)
 	)
 
 	// Find Company
 	company, err := dao.CompanyFindByID(companyID)
 	if err != nil {
-		err = errors.New("Not Found Company by ID")
+		err = errors.New("not Found Company by ID")
 		return nil, err
 	}
 
@@ -35,13 +35,13 @@ func getCompanyBriefByID(companyIDString string) (*companypb.CompanyBrief, error
 
 func getBranchBriefByID(branchIDString string) (*companypb.BranchBrief, error) {
 	var (
-		branchID = util.HelperParseStringToObjectID(branchIDString)
+		branchID = utils.HelperParseStringToObjectID(branchIDString)
 	)
 
 	// Find Branch
 	branch, err := dao.BranchFindByID(branchID)
 	if err != nil {
-		err = errors.New("Not Found Branch by ID")
+		err = errors.New("not Found Branch by ID")
 		return nil, err
 	}
 
@@ -57,7 +57,7 @@ func getBranchBriefByID(branchIDString string) (*companypb.BranchBrief, error) {
 
 func updateCompanyStatsByID(companyIDString string, totalTransaction int64, totalRevenue float64) error {
 	var (
-		companyID = util.HelperParseStringToObjectID(companyIDString)
+		companyID = utils.HelperParseStringToObjectID(companyIDString)
 	)
 
 	// Set filter and update
@@ -70,7 +70,7 @@ func updateCompanyStatsByID(companyIDString string, totalTransaction int64, tota
 	// Update Company
 	err := dao.CompanyUpdateByID(filter, update)
 	if err != nil {
-		err = errors.New("Update CompanyStats error")
+		err = errors.New("update CompanyStats error")
 		return err
 	}
 	return nil
@@ -78,7 +78,7 @@ func updateCompanyStatsByID(companyIDString string, totalTransaction int64, tota
 
 func updateBranchStatsByID(branchIDString string, totalTransaction int64, totalRevenue float64) error {
 	var (
-		branchID = util.HelperParseStringToObjectID(branchIDString)
+		branchID = utils.HelperParseStringToObjectID(branchIDString)
 	)
 
 	// Set filter and update
@@ -91,7 +91,7 @@ func updateBranchStatsByID(branchIDString string, totalTransaction int64, totalR
 	// Update Branch
 	err := dao.BranchUpdateByID(filter, update)
 	if err != nil {
-		err = errors.New("Update BranchStats error")
+		err = errors.New("update BranchStats error")
 		return err
 	}
 	return nil

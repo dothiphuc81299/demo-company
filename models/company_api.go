@@ -1,7 +1,10 @@
 package models
 
 import (
+	"time"
+
 	validation "github.com/go-ozzo/ozzo-validation/v4"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type (
@@ -14,9 +17,19 @@ type (
 
 // Validate ...
 func (payload CompanyCreatePayload) Validate() error {
-	err := validation.Errors{
-		"name":            validation.Validate(payload.Name, validation.Required, validation.Length(3, 20)),
-		"cashbackPercent": validation.Validate(payload.CashbackPercent, validation.Required),
-	}.Filter()
-	return err
+	return validation.ValidateStruct(&payload,
+		validation.Field(&payload.Name, validation.Required.Error("ten khong duoc trong"), validation.Length(3, 20).Error("ten phai co it nhat 3 ki tu ")),
+		validation.Field(&payload.CashbackPercent, validation.Required.Error("cashbackPercent khong duoc trong")),
+	)
+}
+
+// ConvertToBSON ...
+func (payload CompanyCreatePayload) ConvertToBSON() CompanyBSON {
+	result := CompanyBSON{
+		ID:              primitive.NewObjectID(),
+		Name:            payload.Name,
+		CashbackPercent: payload.CashbackPercent,
+		CreatedAt:       time.Now(),
+	}
+	return result
 }
